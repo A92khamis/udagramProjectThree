@@ -21,7 +21,12 @@ before_install:
 install:
   - docker-compose -f docker-compose-build.yaml build --parallel
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker tag udagram-api-feed ahmeddoma/udagram-api-feed
+  - docker tag udagram-api-feed ahmeddoma/udagram-api-user
+  - docker tag udagram-api-feed ahmeddoma/udagram-api-frontend
+  - docker tag udagram-api-feed ahmeddoma/udagram-api-reverseproxy
   - docker push ahmeddoma/udagram-api-feed
   - docker push ahmeddoma/udagram-api-user
+  - docker push ahmeddoma/udagram-api-frontend
   - docker push ahmeddoma/udagram-reverseproxy
   
