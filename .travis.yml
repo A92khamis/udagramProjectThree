@@ -23,10 +23,10 @@ install:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker tag udagram-api-feed ahmeddoma/udagram-api-feed
   - docker tag udagram-api-user ahmeddoma/udagram-api-user
-  - docker tag udagram-frontend ahmeddoma/udagram-frontend2
+  - docker tag udagram-frontend ahmeddoma/udagram-frontend
   - docker tag udagram-reverseproxy ahmeddoma/reverseproxy
   - docker push ahmeddoma/udagram-api-feed
   - docker push ahmeddoma/udagram-api-user
-  - docker push ahmeddoma/udagram-frontend2
+  - docker push ahmeddoma/udagram-frontend
   - docker push ahmeddoma/reverseproxy
   
