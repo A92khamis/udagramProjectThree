@@ -5,19 +5,18 @@ node_js:
 services:
   - docker
 
-install:
+before_install:
+  - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" docker.io
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
   - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
   - chmod +x ./kubectl
   - sudo mv ./kubectl /usr/local/bin/kubectl
-  - mkdir ${HOME}/.kube
-  - mv udagram-kubernetes/config ${HOME}/.kube/
-  - sudo apt-get install awscli
-  - mkdir ${HOME}/.aws
-  - mv udagram-kubernetes/credentials ${HOME}/.aws
-  
-before_script: []
 
-script:
+  
+install:
   - docker --version
   - docker build -f udagram-feed-api/Dockerfile -t  ahmeddoma/udagram-feed-api:latest udagram-feed-api
   - docker build -f udagram-user-api/Dockerfile -t  ahmeddoma/udagram-user-api:latest udagram-user-api
