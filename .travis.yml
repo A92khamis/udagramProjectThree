@@ -1,12 +1,13 @@
-language: node_js
-node_js:
-  - 12
+language: minimal
 
-services:
-  - docker
+services: docker
+
+env:
+  - DOCKER_COMPOSE_VERSION=1.23.2
 
 before_install:
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" docker.io
+  - docker -v && docker-compose -v
   - sudo rm /usr/local/bin/docker-compose
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
@@ -15,10 +16,8 @@ before_install:
   - chmod +x ./kubectl
   - sudo mv ./kubectl /usr/local/bin/kubectl
 
-  
+
+
 install:
-  - docker --version
-  - docker build -f udagram-feed-api/Dockerfile -t  ahmeddoma/udagram-feed-api:latest udagram-feed-api
-  - docker build -f udagram-user-api/Dockerfile -t  ahmeddoma/udagram-user-api:latest udagram-user-api
-  - docker build -f udagram-frontend/Dockerfile -t  ahmeddoma/udagram-frontend:latest udagram-frontend
-  - docker build -f udagram-reverseproxy/Dockerfile -t  ahmeddoma/udagram-reverseproxy:latest udagram-reverseproxy
+  - docker-compose -f docker-compose-build.yaml build --parallel
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
