@@ -20,13 +20,12 @@ script:
   # Make sure the Docker services are running in your local machine
   # Remove unused and dangling images
   # - docker image prune --all
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker-compose -f docker-compose-build.yaml build --parallel
-  - docker-compose -f docker-compose-build.yaml push
+  # - docker-compose -f docker-compose-build.yaml push
 
 after_success:
-  #- docker-compose -f docker-compose-build.yaml push
-  #- docker push ahmeddoma/reverseproxy
-  #- docker push ahmeddoma/udagram-api-feed
-  #- docker push ahmeddoma/udagram-api-user
-  #- docker push ahmeddoma/udagram-frontend
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push ahmeddoma/reverseproxy
+  - docker push ahmeddoma/udagram-api-feed
+  - docker push ahmeddoma/udagram-api-user
+  - docker push ahmeddoma/udagram-frontend
